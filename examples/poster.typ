@@ -21,7 +21,7 @@
 }
 #let fake-italic(body) = skew(-12deg, body)
 #show emph: it => box(fake-italic(it))
-#set text(font: ("IBM Plex Serif", "Source Han Serif SC"), lang: "zh", region: "cn")
+#set text(font: ("IBM Plex Serif", "Source Han Serif", "Noto Serif CJK SC"), lang: "zh", region: "cn")
 #set underline(offset: .2em)
 #show raw.where(block: true): block.with(
     width: 100%,

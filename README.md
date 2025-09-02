@@ -11,10 +11,9 @@
 
 本 PDF 使用 [Touying](https://github.com/touying-typ/touying) 包制作。
 
-- [放映版](https://github.com/OrangeX4/typst-talk/releases/latest/download/typst-talk.pdf)
-- [阅读版](https://github.com/OrangeX4/typst-talk/releases/latest/download/typst-talk-handout.pdf)
-- [Online](https://orangex4.github.io/typst-talk/)
+- [放映版](https://github.com/Goosople/typst-talk/releases/latest/download/presentation.pdf)
+- [阅读版](https://github.com/Goosople/typst-talk/releases/latest/download/handout.pdf)
 
 ---
 
-Copyright (C) 2024 by OrangeX4.
+Copyright (C) 2024 by OrangeX4, 2025 by Goosople.

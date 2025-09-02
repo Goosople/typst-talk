@@ -5,7 +5,7 @@
   doc,
 ) = {
   // 字体应为 11pt 的衬线字体
-  set text(font: "Linux Libertine", 11pt)
+  set text(font: ("Libertinus Serif", "Linux Libertine O"), 11pt)
   // 正文应两端对齐
   set par(justify: true)
 
@@ -75,9 +75,7 @@
 
 
 #show: doc => conf(
-  title: [
-    Towards Improved Modelling
-  ],
+  title: [Towards Improved Modelling],
   authors: (
     (
       name: "Theresa Tungsten",
