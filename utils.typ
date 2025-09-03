@@ -1,35 +1,38 @@
 #import "@preview/octique:0.1.0": *
+#import "@preview/metalogo:1.2.0"
 
 // Logos
 #let typst-color = rgb("#239DAD")
 
 #let Typst = text(fill: typst-color, weight: "bold", "Typst")
 
+#let typst-logo = box(image("images/typst.svg", height: 1em))
+
 #let Touying = text(fill: rgb("#425066"), weight: "bold", "Touying")
 
-#let Markdown = text(fill: rgb(purple), weight: "bold", "Markdown")
+#let Markdown = [#box(move(dy: .15em, octique-inline("markdown"))) Markdown]
 
 #let TeX = {
   set text(font: "New Computer Modern", weight: "regular")
-  box(width: 1.7em, {
-    [T]
-    place(top, dx: 0.56em, dy: 0.22em)[E]
-    place(top, dx: 1.1em)[X]
-  })
+  metalogo.TeX
 }
 
 #let LaTeX = {
   set text(font: "New Computer Modern", weight: "regular")
-  box(width: 2.55em, {
-    [L]
-    place(top, dx: 0.3em, text(size: 0.7em)[A])
-    place(top, dx: 0.7em)[#TeX]
-  })
+  metalogo.LaTeX
 }
 
 
 // Functions
 
-#let linkto(url, icon: "link") = link(url, box(baseline: 30%, move(dy: -.15em, octique-inline(icon))))
+#let linkto(url) = link(url, box(baseline: 30%, move(dy: -.15em, octique-inline(if "github" in url {"mark-github"} else {"link"}))))
 
 #let keydown(key) = box(stroke: 2pt, inset: .2em, radius: .2em, baseline: .2em, key)
+
+#let link-with-icon(link) = {
+  if link.body not in (
+    box(baseline: 30%, move(dy: -.15em, octique-inline("link"))),
+    box(baseline: 30%, move(dy: -.15em, octique-inline("mark-github"))),
+  ) [#link #linkto(link.dest)]
+  else { link }
+}

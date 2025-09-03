@@ -18,6 +18,7 @@
   radius: .2em,
 )
 #show raw.where(block: true): set par(justify: false)
+#show link: link-with-icon
 
 #show: university-theme.with(
   aspect-ratio: "16-9",
@@ -26,16 +27,16 @@
     h(1fr) + utils.display-info-date(self) + h(1fr) + context utils.slide-counter.display(int-to-cn-ancient-num) + h(1fr)
   ),
   config-common(
-    handout: true,
-    datetime-format: "[year] 年 [month] 月 [day] 日",
+    handout: eval(sys.inputs.at("handout", default: "false")),
+    datetime-format: "[year]年[month]月[day]日",
   ),
   config-info(
-    title: [并不复杂的 Typst 讲座],
+    title: [并不复杂的Typst讲座],
     subtitle: [Typst is Simple],
-    author: [OrangeX4],
+    author: [宋泊萱],
     date: datetime(year: 2024, month: 3, day: 17),
-    institution: [南京大学],
-    logo: emoji.school,
+    institution: [GTIIT],
+    logo: box(move(dy: -.15em, image("images/GTIIT.png", width: 1em)), baseline: 30%),
   ),
   // hack for hiding list markers
   config-methods(cover: (self: none, body) => box(scale(x: 0%, body))),
@@ -50,7 +51,7 @@
 
 = 介绍
 
-== 什么是 Typst？
+== 什么是Typst？
 
 - *介绍：*
   - #Typst 是为写作而诞生的基于标记的排版系统。#Typst 的目标是成为功能强大的排版工具，并且让用户可以愉快地使用它。#pause
@@ -60,72 +61,47 @@
 
 - *运行环境：*Web Wasm / CLI / LSP Language Server
 
-- *编辑器：*Web App #linkto("https://typst.app/") / VS Code / Neovim / Emacs
+- *编辑器：*#link("https://typst.app/")[Web App] / VS Code / Neovim / Emacs / ...
 
 
-#empty-slide[
+#slide[
   #set align(center + horizon)
   #image("images/typst-introduction.png")
-  #place(top + right, dx: -.5em, dy: .5em)[#linkto(icon: "mark-github", "https://github.com/typst/typst")]
 ]
 
 
-== Typst 速览
+== Typst速览
 
 #slide[
   #set text(.5em)
 
-  ```typ
-  #set page(width: 10cm, height: auto)
-  #set heading(numbering: "1.")
+  #raw(read("examples/fibonacci.typ"), block: true, lang: "typ")
 
-  = Fibonacci sequence
-  The Fibonacci sequence is defined through the recurrence relation $F_n = F_(n-1) + F_(n-2)$.
-  It can also be expressed in _closed form:_
-
-  $ F_n = round(1 / sqrt(5) phi.alt^n)，quad phi.alt = (1 + sqrt(5)) / 2 $
-
-  #let count = 8
-  #let nums = range(1, count + 1)
-  #let fib(n) = (
-    if n <= 2 { 1 }
-    else { fib(n - 1) + fib(n - 2) }
-  )
-
-  The first #count numbers of the sequence are:
-
-  #align(center, table(
-    columns: count,
-    ..nums.map(n => $F_#n$),
-    ..nums.map(n => str(fib(n))),
-  ))
-  ```
-
-  来源：Typst 官方 Repo #linkto("https://github.com/typst/typst")
+  来源：#link("https://github.com/typst/typst")[Typst官方Repo]
 ][
   #set align(center + horizon)
 
-  #image("examples/fibonacci.png")
+  #image("examples/fibonacci.svg")
 ]
 
 
-== Typst 优势
+== Typst优势
 
 - *语法简洁：*上手难度跟 #Markdown 相当，文本源码可阅读性高。#pause
 
 - *编译速度快：*
-  - Typst 使用 Rust 语言编写，即 `typ(esetting+ru)st`。
-  - 增量编译时间一般维持在*数毫秒*到*数十毫秒*。#pause
+  - #Typst 本身使用Rust语言编写，即 `typ(esetting+ru)st`。
+  - 文档增量编译时间一般维持在*数毫秒*到*数十毫秒*。#pause
 
-- *环境搭建简单：*不像 #LaTeX 安装起来困难重重，#Typst 原生支持中日韩等非拉丁语言，官方 Web App 和本地 VS Code 均能*开箱即用*。#pause
+- *环境搭建简单：*不像 #LaTeX 安装起来困难重重，#Typst 原生支持中日韩等非拉丁语言，官方Web App和本地VS Code均能*开箱即用*。#pause
 
 - *现代脚本语言：*
   - 变量、函数、闭包与错误检查 + 函数式编程的纯函数理念
-  - 可嵌套的 `[标记模式]`、`{脚本模式}` 与 `$数学模式$` #strike[不就是 JSX 嘛]
-  - 统一的包管理，支持导入 WASM 插件和按需自动安装第三方包
+  - 可嵌套的 `[标记模式]`、`#{脚本模式}` 与 `$数学模式$` //#strike[不就是JSX嘛]
+  - 统一的包管理，支持导入WASM插件和按需自动安装第三方包
 
 
-== Typst 对比其他排版系统
+== Typst对比其他排版系统
 
 #slide[
   #set text(.7em)
@@ -151,10 +127,10 @@
       table.hline(stroke: 2pt),
       [排版系统], [安装难度], [语法难度], [编译速度], [排版能力], [模板能力], [编程能力], [方言数量],
       table.hline(stroke: 1pt),
-      [LaTeX], cell[#难][选项多 + 体积大 + 流程复杂], cell[#难][语法繁琐 + 嵌套多 + 难调试], cell[#慢][宏语言编译\ 速度极慢], cell[#强][拥有最多的\ 历史积累], cell[#强][拥有众多的\ 模板和开发者], cell[#中][图灵完备\ 但只是宏语言], cell[#中][众多格式、\ 引擎和发行版],
-      [#Markdown], cell[#易][大多编辑器\ 默认支持], cell[#易][入门语法十分简单], cell[#快][语法简单\ 编译速度较快], cell[#弱][基于 HTML排版能力弱], cell[#中][语法简单\ 易于更换模板], cell[#弱][图灵不完备 \ 需要外部脚本], cell[#多][方言众多\ 且难以统一],
-      [Word], cell[#易][默认已安装], cell[#易][所见即所得], cell[#中][能实时编辑\ 大文件会卡顿], cell[#强][大公司开发\ 通用排版软件], cell[#弱][二进制格式\ 难以自动化], cell[#弱][编程能力极弱], cell[#少][统一的标准和文件格式],
-      [#Typst], cell[#易][安装简单\ 开箱即用], cell[#中][入门语法简单\ 进阶使用略难], cell[#快][增量编译渲染\ 速度最快], cell[#较强][已满足日常\ 排版需求], cell[#强][制作和使用\ 模板都较简单], cell[#强][图灵完备\ 现代编程语言], cell[#少][统一的语法\ 统一的编译器],
+      [#LaTeX], cell[#难][选项多 + 体积大 + 流程复杂], cell[#难][语法繁琐 + 嵌套多 + 难调试], cell[#慢][宏语言编译\ 速度极慢], cell[#强][拥有最多的\ 历史积累], cell[#强][拥有众多的\ 模板和开发者], cell[#中][图灵完备\ 但只是宏语言], cell[#中][众多格式、\ 引擎和发行版],
+      [#Markdown], cell[#易][大多编辑器\ 默认支持], cell[#易][入门语法十分简单], cell[#快][语法简单\ 编译速度较快], cell[#弱][基于HTML排版能力弱], cell[#中][语法简单\ 易于更换模板], cell[#弱][图灵不完备 \ 需要外部脚本], cell[#多][方言众多\ 且难以统一],
+      [Word], cell[#易][多数电脑\ 默认安装], cell[#易][所见即所得], cell[#中][能实时编辑\ 大文件会卡顿], cell[#强][大公司开发\ 通用排版软件], cell[#弱][二进制格式\ 难以自动化], cell[#弱][编程能力极弱], cell[#少][统一的标准和文件格式],
+      [#typst-logo], cell[#易][安装简单\ 开箱即用], cell[#中][入门语法简单\ 进阶使用略难], cell[#快][增量编译渲染\ 速度最快], cell[#较强][已满足日常\ 排版需求], cell[#强][制作和使用\ 模板都较简单], cell[#强][图灵完备\ 现代编程语言], cell[#少][统一的语法\ 统一的编译器],
       table.hline(stroke: 2pt),
     ),
   )
@@ -165,7 +141,7 @@
   #v(-1.5em)
   #image("images/meme.png")
   #v(-1.5em)
-  From reddit r/LaTeX #linkto("https://www.reddit.com/r/LaTeX/comments/z2ifki/latex_vs_word_vs_pandoc_markdown/") and modfied by OrangeX4
+  From Reddit #link("https://www.reddit.com/r/LaTeX/comments/z2ifki/latex_vs_word_vs_pandoc_markdown/")[r/LaTeX] and modified by OrangeX4
 ]
 
 
@@ -173,33 +149,30 @@
 
 == 云端使用
 
-- 官方提供了 Web App，可以直接在浏览器中使用 #linkto("https://typst.app/") #pause
+- 官方提供了Web App，可以直接在浏览器中使用 #linkto("https://typst.app/") #pause
 
 - *优点：*
   - 即开即用，无需安装。
-  - 类似于 #LaTeX 的 Overleaf，可以直接编辑、编译、分享文档。
+  - 类似于 #LaTeX 的Overleaf，可以直接编辑、编译、分享文档。
   - 拥有*「多人协作」*支持，可以实时共同编辑。#pause
 
 - *缺点：*
   - 中文字体较少，经常需要手动上传字体文件，但有上传大小限制。
-  - 缺少版本控制，目前无法与 GitHub 等代码托管平台对接。
+  - 缺少版本控制，目前无法与GitHub等代码托管平台对接。
 
 
 == 本地使用（推荐）
 
-- *VS Code 方案（推荐）*
+- *Tinymist（推荐）*
   - 在插件市场安装「Tinymist Typst」插件。
   - 新建一个 `.typ` 文件，然后按下 #keydown[Ctrl] + #keydown[K] #keydown[V] 即可实时预览。
-  - *不再需要其他配置*，例如我们并不需要命令行安装 Typst CLI。#pause
+  - *不再需要其他配置*，例如我们并不需要命令行安装Typst CLI。#pause
 
-- *Neovim / Emacs 方案*
-  - 可以配置相应的 LSP 插件和 Preview 插件。#pause
-
-- *CLI 方案：* `typst compile --root <DIR> <INPUT_FILE>`
+- *官方CLI：* `typst compile --root <DIR> <INPUT_FILE>`
   - Windows: `winget install --id Typst.Typst`
   - macOS: `brew install typst`
-  - Linux：查看 Typst on Repology #linkto("https://repology.org/project/typst/versions")
-  - rust工具链：`cargo install --locked typst-cli`
+  - Linux：查看Typst on Repology #linkto("https://repology.org/project/typst/versions")
+  - Rust工具链：`cargo install --locked typst-cli`
 
 = 快速入门
 
@@ -216,21 +189,21 @@
   #show "LaTeX": set text(fill: red, weight: "bold")
   #show "Markdown": set text(fill: purple, weight: "bold")
 
-  = Typst 讲座
+  = Typst讲座
 
-  Typst 是为 *学术写作* 而生的基于 _标记_ 的排版系统。
+  Typst是为 *学术写作* 而生的基于 _标记_ 的排版系统。
 
-  Typst = LaTeX 的排版能力 + Markdown 的简洁语法 + 现代的脚本语言
+  Typst = LaTeX的排版能力 + Markdown的简洁语法 + 现代的脚本语言
 
   #underline[本讲座]包括以下内容：
 
-  + 快速入门 Typst
-  + Typst 编写各类模板
-    - 笔记、论文、简历和 Slides
-  + Typst 高级特性
+  + 快速入门Typst
+  + Typst编写各类模板
+    - 笔记、论文、简历和Slides
+  + Typst高级特性
     - 脚本、样式和包管理
-  + Typst 周边生态开发体验
-    - Pinit、MiTeX、Touying 和 VS Code 插件
+  + Typst周边生态开发体验
+    - Pinit、MiTeX、Touying和VS Code插件
 
   ```py
   print('Hello Typst!')
@@ -239,7 +212,7 @@
 ][
   #set align(center + horizon)
   #v(-1em)
-  #image("examples/poster.png")
+  #image("examples/poster.svg")
 ]
 
 
@@ -252,6 +225,7 @@
   == 二级标题
 
   简单的段落，可以*加粗*和_强调_。
+
 
   - 无序列表
   + 有序列表
@@ -295,11 +269,11 @@
 
 == Set/Show Rules
 
-- *Set 规则可以设置样式，即「为函数设置参数默认值」的能力。*
+- *Set规则可以设置样式，即「为函数设置参数默认值」的能力。*
   - 例如 `#set heading(numbering: "1.")` 用于设置标题的编号。
   - 使得 `#heading[标题]` 变为 `#heading(numbering: "1.", [标题])`。#pause
 
-- *Show 规则用于全局替换，即在语法树上进行「宏编程」的能力。*
+- *Show规则用于全局替换，即在语法树上进行「宏编程」的能力。*
   - 例如 `#show "LaTeX": "Typst"` 将单词 `LaTeX` 替换为 `Typst`。
   - 例如让一级标题居中，可以用*「箭头函数」*：
     - #block(
@@ -324,9 +298,9 @@
 
 - 与 #LaTeX 的差异：
   - `(x + 1) / x >= 1 => 1/x >= 0`
-  - #raw(lang: "latex", `\frac{x + 1}{x} \ge 1 \Rightarrow \frac{1}{x} \ge 0`.text) #pause
+  - ```tex \frac{x + 1}{x} \ge 1 \Rightarrow \frac{1}{x} \ge 0``` #pause
 
-- *报告，我想用 LaTeX 语法：*#linkto("https://github.com/mitex-rs/mitex")
+- *报告，我想用LaTeX语法：*#linkto("https://github.com/mitex-rs/mitex")
 
 ```typ
 #import "@preview/mitex:0.2.5": *
@@ -343,14 +317,14 @@ Write inline equations like #mi("x") or #mi[y].
 
 现在，我们想要为一个会议制作一个模板，以下是*需求规范*：
 
-+ *字体*应为 11pt 的衬线字体；
-+ *标题*应为 17pt 的粗体，居中对齐；
++ *字体*应为11pt的衬线字体；
++ *标题*应为17pt的粗体，居中对齐；
 + 论文包含*单栏摘要*和*两栏正文*；
 + *摘要*应居中；
 + *正文*应两端对齐；
-+ *一级章节标题*应为 13pt，居中并以小写字母呈现；
++ *一级章节标题*应为13pt，居中并以小写字母呈现；
 + *二级标题*是短标题，斜体，与正文文本具有相同的大小；
-+ 最后，*页面尺寸*应为 US letter，编号在页脚的中心，每页的左上角应包含论文的标题。
++ 最后，*页面尺寸*应为US letter，编号在页脚的中心，每页的左上角应包含论文的标题。
 
 
 #slide[
@@ -434,7 +408,7 @@ Write inline equations like #mi("x") or #mi[y].
   }
   ```
 
-  来源：Typst 官方文档 #linkto("https://typst.app/docs/tutorial/making-a-template/")
+  来源：Typst官方文档 #linkto("https://typst.app/docs/tutorial/making-a-template/")
 ]
 
 #slide[
@@ -477,14 +451,14 @@ Write inline equations like #mi("x") or #mi[y].
 ][
   #set align(right + horizon)
   #show: rect.with(stroke: .5pt)
-  #image("examples/conference.png")
+  #image("examples/conference.svg")
 ]
 
 
 == 制作简历模板
 
 #slide(composer: (1fr, auto))[
-  - Word / HTML 简历模板？
+  - Word / HTML简历模板？
     - *不够美观* #pause
 
   - #LaTeX 简历模板？
@@ -513,7 +487,7 @@ Write inline equations like #mi("x") or #mi[y].
 ][
   #set align(center + horizon)
   #show: rect.with(stroke: .5pt)
-  #image("examples/chicv.png")
+  #image("examples/chicv.svg")
 ]
 
 
@@ -567,16 +541,16 @@ Write inline equations like #mi("x") or #mi[y].
 ]
 
 
-= 制作 Slides
+= 制作Slides
 
 == Touying
 
-- #Touying 是为 Typst 开发的 Slides 包，类似于 #LaTeX 的 Beamer。
-  - 取自中文「*投影*」，而 Beamer 是德语「*投影仪*」的意思。#linkto("https://touying-typ.github.io/zh/") #pause
+- #Touying 是为Typst开发的Slides包，类似于 #LaTeX 的Beamer。
+  - 取自中文「*投影*」，而Beamer是德语「*投影仪*」的意思。#linkto("https://touying-typ.github.io/zh/") #pause
 
 - *基本框架：*
   - 全局单例对象 `s` 保存标题、作者和日期等信息。
-  - 使用 `= 节`、`== 小节` 和 `=== 标题` 划分 Slides 结构。
+  - 使用 `= 节`、`== 小节` 和 `=== 标题` 划分Slides结构。
   - 使用 `#slide[..]` 块来实现更优雅且精细的控制。 #pause
 
 - *使用主题：*
@@ -647,17 +621,17 @@ Write inline equations like #mi("x") or #mi[y].
 
   #set text(1.2em)
 
-  来源：Touying 文档 #linkto("https://touying-typ.github.io/zh/docs/themes/aqua")
+  来源：Touying文档 #linkto("https://touying-typ.github.io/zh/docs/themes/aqua")
 ][
   #set align(center + horizon)
   #show: pad.with(right: -1.5em)
-  #image(height: 90%, "examples/touying.png")
+  #image(height: 90%, "examples/touying.svg")
 ]
 
 
 == Pinit
 
-- *Pinit* 包提供基于*「图钉」（pin）*进行相对定位的能力。
+- *Pinit*包提供基于*「图钉」（pin）*进行相对定位的能力。
 
 - 可以方便地实现*「箭头指示」*与*「解释说明」*的效果。
 
@@ -689,16 +663,16 @@ Write inline equations like #mi("x") or #mi[y].
   #set align(center + horizon)
   #image(height: 115%, "images/pinit-3.png")
   #set text(.8em)
-  #place(top + left, dy: -.5em)[使用 #Typst 和 *Pinit* 复刻算法课的 Slides，样式来源于 #linkto("https://chaodong.me/")]
+  #place(top + left, dy: -.5em)[使用 #Typst 和*Pinit*复刻算法课的Slides，样式来源于 #linkto("https://chaodong.me/")]
   #place(
     top + right,
     dx: 1.5em,
     dy: -.5em,
-  )[*示例代码* #linkto(icon: "mark-github", "https://touying-typ.github.io/touying/zh/docs/integration/pinit")]
+  )[*示例代码* #linkto("https://touying-typ.github.io/touying/zh/docs/integration/pinit")]
 ]
 
 
-== Touying 对比其他 Slides 方案
+== Touying对比其他Slides方案
 
 #slide[
   #set text(.7em)
@@ -721,66 +695,67 @@ Write inline equations like #mi("x") or #mi[y].
       table.hline(stroke: 2pt),
       [方案], [语法难度], [编译速度], [排版能力], [模板能力], [编程能力], [动画效果], [代码公式],
       table.hline(stroke: 1pt),
-      [*PowerPoint*], cell[#易][所见即所得], cell[#快][实时编辑], cell[#强][大公司开发\ 通用软件], cell[#强][模板数量最多\ 容易制作模板], cell[#弱][编程能力极弱\ 难以显示进度], cell[#强][动画效果多\ 但用起来复杂], cell[#难][难以插入代码和公式 #strike[贴图片]],
+      [PowerPoint], cell[#易][所见即所得], cell[#快][实时编辑], cell[#强][大公司开发\ 通用软件], cell[#强][模板数量最多\ 容易制作模板], cell[#弱][编程能力极弱\ 难以显示进度], cell[#强][动画效果多\ 但用起来复杂], cell[#难][难以插入代码和公式 #strike[贴图片]],
       [Beamer], cell[#难][语法繁琐 + 嵌套多 + 难调试], cell[#慢][宏语言编译\ 速度极慢], cell[#弱][使用模板后\ 排版难以修改], cell[#中][拥有较多模板\ 开发模板较难], cell[#中][图灵完备\ 但只是宏语言], cell[#中][简单动画方便\ 无过渡动画], cell[#易][基本默认支持],
       [#Markdown], cell[#易][入门语法十分简单], cell[#快][语法简单\ 编译速度较快], cell[#弱][语法限制\ 排版能力弱], cell[#弱][难以制作模板\ 只有内置模板], cell[#弱][图灵不完备\ 需要外部脚本], cell[#中][动画效果全看提供了什么], cell[#易][基本默认支持],
-      [#Touying], cell[#易][语法简单\ 使用方便], cell[#快][增量编译渲染\ 速度最快], cell[#中][满足日常学术\ Slides 需求], cell[#强][制作和使用\ 模板都较简单], cell[#强][图灵完备\ 现代编程语言], cell[#中][简单动画方便\ 无过渡动画], cell[#易][默认支持\ MiTeX 包],
+      [#Touying], cell[#易][语法简单\ 使用方便], cell[#快][增量编译渲染\ 速度最快], cell[#中][满足日常学术\ Slides需求], cell[#强][制作和使用\ 模板都较简单], cell[#强][图灵完备\ 现代编程语言], cell[#中][简单动画方便\ 无过渡动画], cell[#易][默认支持\ MiTeX包],
       table.hline(stroke: 2pt),
     ),
   )
 ]
 
 
-== 一些常见的 Slides 问题
+== 一些常见的Slides问题
 
-- *能不能插入 LaTeX 公式？*
-  - 可以，只需要使用 MiTeX 包。#linkto("https://github.com/mitex-rs/mitex") #pause
+- *能不能插入LaTeX公式？*
+  - 可以，只需要使用MiTeX包。#linkto("https://github.com/mitex-rs/mitex") #pause
 
-- *能不能够加入 GIF 动图或者视频？*
-  - GIF 动图可以，但是要使用 *Tinymist* 插件的 Slide 模式。
-    - 这是因为 *Tinymist* 插件是*基于 SVG* 的。 #pause
+- *能不能够加入GIF动图或者视频？*
+  - GIF动图可以，但是要使用*Tinymist*插件的Slide模式。
+    - 这是因为*Tinymist*插件是*基于SVG*的。 #pause
 
 - *插入图片方便吗？*
-  - 方便，比如本讲座的 Slides 就有一堆图片。
-    - 你可以使用 *grid 布局*。
-    - 也可以使用 *Pinit* 包的 *「图钉」* 功能。
+  - 方便，比如本讲座的Slides就有一堆图片。
+    - 你可以使用*grid布局*。
+    - 也可以使用*Pinit*包的*「图钉」*功能。
 
 
 = 包管理
 
-== Typst 包管理
+== Typst包管理
 
 - #Typst 已经有了一个简单但强大的包管理方案。
   - 包可以通过 `#import "@preview/pkg:1.0.0"` 的方式导入。
     - *按需自动下载和自动导入第三方包。*
-      - 因此我们不需要像 *TexLive* 一样全量安装吃满硬盘。
+      - 因此我们不需要像*TexLive*一样全量安装吃满硬盘。
     - 使用 `@preview` 命名空间。
     - 需要写上版本号，以保证文档源代码可复现性。
-  - 包目前存放于统一的 GitHub Repo 中。#linkto("https://github.com/typst/packages")
-  - 包可以是 *Package* 和 *Template*。
+  - 包目前存放于统一的GitHub Repo中。#linkto("https://github.com/typst/packages")
+  - 包可以是*Package*和*Template*。
   - 包也可以存放在本地，并且可以全局导入。
 
-- #Typst 有一个 *Typst Universe*，可以浏览已有包。#linkto("https://typst.app/universe")
+- #Typst 有一个*Typst Universe*，可以浏览已有包。#linkto("https://typst.app/universe")
 
 
-== WASM 插件
+== WASM插件
 
-- *WASM* 是一种基于 *Web* 的*跨平台*汇编语言表示。
+- *WASM*是一种基于*Web*的*跨平台*汇编语言表示。
 
-- #Typst 有 *WASM Plugin* 功能，也就是说：
-  - #Typst 的包并不一定要是纯 Typst 代码。
-  - #Typst 的包基本上可以用任意语言编写，例如 *Rust* 和 *JS*。#pause
+- #Typst 有*WASM Plugin*功能，也就是说：
+  - #Typst 的包并不一定要是纯Typst代码。
+  - #Typst 的包基本上可以用任意语言编写，例如*Rust*和*JS*。#pause
 
-- 一些 WASM 包的例子：
-  - *jogs：*封装 *QuickJS*，在 #Typst 中运行 *JavaScript* 代码。
-  - *pyrunner：*在 #Typst 中运行 *Python* 代码。
-  - *tiaoma：*封装 *Zint*，生成条码和二维码。
-  - *diagraph：*在 #Typst 中使用 *Graphviz*。
+- 一些WASM包的例子：
+  - *jogs：*封装*QuickJS*，在 #Typst 中运行*JavaScript*代码。
+  - *pyrunner：*在 #Typst 中运行*Python*代码。
+  - *tiaoma：*封装*Zint*，生成条码和二维码。
+  - *diagraph：*在 #Typst 中使用*Graphviz*。
 
 
 
-= Typst 生态开发体验
+= Typst生态开发体验
 
+/**
 == 我参与开发的项目
 
 - *Touying：*#Touying 是为 Typst 开发的 Slides 包。#linkto("https://github.com/touying-typ/touying")
@@ -791,6 +766,7 @@ Write inline equations like #mi("x") or #mi[y].
 - *Tablem：*在 #Typst 中支持 #Markdown 形式的表格。#linkto("https://github.com/OrangeX4/typst-tablem")
 - *Typst Sympy Calculator：*在 *VS Code* 中做科学符号运算。#linkto("https://github.com/OrangeX4/vscode-typst-sympy-calculator")
 - *Typst Sync：*云端同步本地包的 *VS Code* 插件。#linkto("https://github.com/OrangeX4/vscode-typst-sync")
+**/
 
 
 == 开发体验
@@ -798,15 +774,15 @@ Write inline equations like #mi("x") or #mi[y].
 - #Typst 生态现状：#strike[*勃勃生机，万物竞发*] #pause
 
 - 语法简单，强类型语言，易于开发和调试。
-  - 写起 DSL 也很方便，比如 *MiTeX*、#Touying 和 *Tablem*。#pause
+  - 写起DSL也很方便，比如*MiTeX*、#Touying 和*Tablem*。#pause
 
 - 还有很多功能可以开发，#strike[例如把 #LaTeX 的宏包全都复刻一遍]。#pause
 
 - *一些例子：*
-  - 国人开发的 *Tinymist* 插件。
-  - *Pandoc* 支持和 *Quarto* 支持。
-  - 在网页上运行 #Typst：typst.ts #linkto("https://myriad-dreamin.github.io/typst.ts/") 和 shiroa。#linkto("https://myriad-dreamin.github.io/shiroa/")
-  - 在 *VS Code* 的编辑器里显示数学符号的 *Typst Math* 插件。
+  - 国人开发的*Tinymist*插件。
+  - *Pandoc*支持和*Quarto*支持。
+  - 在网页上运行 #Typst：typst.ts #linkto("https://myriad-dreamin.github.io/typst.ts/") 和shiroa。#linkto("https://myriad-dreamin.github.io/shiroa/")
+  - 在*VS Code*的编辑器里显示数学符号的*Typst Math*插件。
 
 
 = 最后
@@ -822,9 +798,9 @@ Write inline equations like #mi("x") or #mi[y].
 
   + *#Typst 中文教程* #linkto("https://github.com/typst-doc-cn/tutorial")
 
-  + *Typst 非官方中文交流群* 793548390
+  + *Typst非官方中文交流群* 793548390
 
-  + *南京大学 Typst 交流群* 943622984
+  + *南京大学Typst交流群* 943622984
 ]
 
 

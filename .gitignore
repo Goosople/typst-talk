@@ -1,4 +1,5 @@
 .DS_Store
 *.pdf
 examples/*.png
+examples/*.svg
 .vscode
