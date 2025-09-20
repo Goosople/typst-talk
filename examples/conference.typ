@@ -75,9 +75,7 @@
 
 
 #show: doc => conf(
-  title: [
-    Towards Improved Modelling
-  ],
+  title: [Towards Improved Modelling],
   authors: (
     (
       name: "Theresa Tungsten",

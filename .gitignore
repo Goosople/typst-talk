@@ -1,5 +1,6 @@
 .DS_Store
 *.pdf
 examples/*.png
+!examples/touying.png
 examples/*.svg
 .vscode
