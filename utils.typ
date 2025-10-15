@@ -1,5 +1,6 @@
 #import "@preview/octique:0.1.1": *
 #import "@preview/metalogo:1.2.0"
+#import "@preview/touying:0.6.1": themes.university.focus-slide
 
 // Logos
 #let typst-color = rgb("#239DAD")
@@ -38,3 +39,9 @@
   ) [#link #linkto(link.dest)]
   else { link }
 }
+
+#let github-repo(repo) = link("https://github.com/" + repo, repo)
+
+#let chapter-slide(body) = focus-slide[
+  #align(center + horizon, body)
+]

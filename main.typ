@@ -3,14 +3,16 @@
 #import "@preview/a2c-nums:0.0.1": int-to-cn-ancient-num
 #import "utils.typ": *
 
+#let is-handout = sys.inputs.at("handout", default: "false") == "true" // it's risky to use eval
+
 // global styles
-#set text(font: ("IBM Plex Serif", "Source Han Serif SC", "Noto Serif CJK SC"), lang: "zh", region: "cn")
+#set text(font: ("IBM Plex Serif", "Source Han Serif", "Noto Serif CJK SC"), lang: "zh", region: "cn")
 #show heading.where(level: 1): set heading(numbering: "1.")
 #set text(weight: "medium")
 #set par(justify: true)
 #set raw(lang: "typ")
 #set underline(stroke: .05em, offset: .25em)
-#show raw: set text(font: ("IBM Plex Mono", "Source Han Sans SC", "Noto Sans CJK SC"))
+#show raw: set text(font: ("IBM Plex Mono", "Source Han Sans", "Noto Sans CJK SC"))
 #show raw.where(block: false): box.with(
   fill: luma(240),
   inset: (x: .3em, y: 0em),
@@ -27,14 +29,15 @@
     h(1fr) + utils.display-info-date(self) + h(1fr) + context utils.slide-counter.display(int-to-cn-ancient-num) + h(1fr)
   ),
   config-common(
-    handout: eval(sys.inputs.at("handout", default: "false")),
+    handout: is-handout,
     datetime-format: "[year]年[month]月[day]日",
+    new-section-slide-fn: new-section-slide
   ),
   config-info(
     title: [并不复杂的Typst讲座],
     subtitle: [Typst is Simple],
     author: [宋泊萱],
-    date: datetime(year: 2024, month: 3, day: 17),
+    date: datetime(year: 2024, month: 3, day: 17), // TODO: change this to the date of Talk
     institution: [GTIIT],
     logo: box(move(dy: -.15em, image("images/GTIIT.png", width: 1em)), baseline: 30%),
   ),
@@ -48,6 +51,8 @@
 == 目录 <touying:hidden>
 
 #align(horizon, components.adaptive-columns(outline(title: none, indent: 1em, depth: 1)))
+
+#if not is-handout { chapter-slide[What is Typst] }
 
 = 介绍
 
@@ -84,6 +89,7 @@
   #image("examples/fibonacci.svg")
 ]
 
+#if not is-handout { chapter-slide[Why Typst] }
 
 == Typst优势
 
@@ -144,6 +150,79 @@
   From Reddit #link("https://www.reddit.com/r/LaTeX/comments/z2ifki/latex_vs_word_vs_pandoc_markdown/")[r/LaTeX] and modified by OrangeX4
 ]
 
+== Typst vs #LaTeX
+#[
+  #set text(size: 0.8em)
+  #align(horizon, grid(align: horizon, columns: (1fr, 1fr, 1fr), column-gutter: 1em, row-gutter: 2em)[
+    ```typ
+    + 项目 1
+    + 项目 2
+    ```
+  ][
+    ```tex
+    \begin{enumerate}
+      \item 项目 1
+      \item 项目 2
+    \end{enumerate}
+    ```
+  ][
+    + 项目 1
+    + 项目 2
+  ][
+    ```typ
+    - Point 1
+    - Point 2
+    ```
+  ][
+    ```tex
+    \begin{itemize}
+      \item Point 1
+      \item Point 2
+    \end{itemize}
+    ```
+  ][
+    - Point 1
+    - Point 2
+  ][
+    ```typ
+    $ lim_(x->oo) 1/x = 0 $
+    ```
+  ][
+    ```tex
+    \[
+      \lim_{x \to \infty} \frac{1}{x} = 0
+    \]
+    ```
+  ][
+    $ lim_(x->oo) 1/x = 0 $
+  ])
+
+  ---
+
+  #align(
+    horizon,
+    grid(
+      align: horizon,
+      columns: (1fr, 1fr),
+      column-gutter: 1em,
+      row-gutter: 2em,
+      [
+        ```typ
+        $ det mat(a, b; c, d) = mat(delim: "|", a, b; c, d) = a d - b c $
+        ```
+      ],
+      [
+        ```tex
+        \[ \det \begin{pmatrix} a & b \\ c & d \end{pmatrix} = \begin{vmatrix} a & b \\ c & d \end{vmatrix} = ad - bc \]
+        ```
+      ],
+      grid.cell(colspan: 2)[
+        $ det mat(a, b; c, d) = mat(delim: "|", a, b; c, d) = a d - b c $
+      ]
+    )
+  )
+]
+#if not is-handout { chapter-slide[How to use Typst] }
 
 = 安装
 
@@ -270,10 +349,10 @@
 - `$x$` 是行内公式，`$ x^2 + y^2 = 1 $ <circle>` 是行间公式。#pause
 
 - 与 #LaTeX 的差异：
-  - `(x + 1) / x >= 1 => 1/x >= 0`
+  - ```typm (x + 1) / x >= 1 => 1/x >= 0```
   - ```tex \frac{x + 1}{x} \ge 1 \Rightarrow \frac{1}{x} \ge 0``` #pause
 
-- *报告，我想用LaTeX语法：*#linkto("https://github.com/mitex-rs/mitex")
+- *报告，我想用#link("https://github.com/mitex-rs/mitex")[LaTeX语法]：*
 
 ```typ
 #import "@preview/mitex:0.2.5": *
@@ -645,18 +724,18 @@ Write inline equations like #mi("x") or #mi[y].
 
   + #link("https://github.com/typst-doc-cn/tutorial")[*#Typst 中文教程*]
 
-  + https://github.com/OrangeX4/typst-talk
+  + #github-repo("OrangeX4/typst-talk")
 
   + *Typst非官方中文交流群* 793548390
 
-  + *南京大学Typst交流群* 943622984
+  // + *南京大学Typst交流群* 943622984
 ]
 
 
 == 关于
 
 #slide[
-  *本幻灯片：*https://github.com/Goosople/typst-talk，修改自https://github.com/OrangeX4/typst-talk
+  *本幻灯片：*#github-repo("Goosople/typst-talk")，修改自#github-repo("OrangeX4/typst-talk")
 
   *最后更新：*#datetime.today().display()
 

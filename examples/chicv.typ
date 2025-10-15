@@ -1,4 +1,4 @@
-#show heading: set text(font: "Linux Biolinum")
+#show heading: set text(font: "Linux Biolinum O")
 // 为链接加入下划线
 #show link: underline
 // 推荐的简历文本大小为“10pt”到“12pt”

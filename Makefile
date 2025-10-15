@@ -1,6 +1,11 @@
-.PHONY: all
+.PHONY: all clean rebuild
 
 all: presentation.pdf handout.pdf
+
+clean:
+	rm handout.pdf presentation.pdf examples/*.svg
+
+rebuild: clean all
 
 examples/%.svg: examples/%.typ
 	typst compile --root examples --pages 1 $^ $@
