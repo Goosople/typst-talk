@@ -71,7 +71,9 @@
 
 #slide[
   #set align(center + horizon)
+  #set text(size: .5em)
   #image("images/typst-introduction.png")
+  #place(right + bottom)[#link("https://github.com/Wallbreaker5th/typst-introduction-in-one-page")[一页介绍Typst]]
 ]
 
 
@@ -594,7 +596,7 @@ Write inline equations like #mi("x") or #mi[y].
     top + right,
     dx: 1.5em,
     dy: -.5em,
-  )[#link("https://touying-typ.github.io/touying/zh/docs/integration/pinit")[*示例代码*]]
+  )[#link("https://touying-typ.github.io/zh/docs/integration/pinit")[*示例代码*]]
 ]
 
 
@@ -744,6 +746,8 @@ Typst有一个简单但强大的包管理方案。
 
   *作者：*#link("https://github.com/OrangeX4")[OrangeX4]，#link("https://github.com/Goosople")[Goosople]
 ]
+
+#if not is-handout { chapter-slide[Hands-on experience!] }
 
 #focus-slide[
   #set align(center + horizon)
