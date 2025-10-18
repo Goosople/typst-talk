@@ -12,7 +12,7 @@
 #set par(justify: true)
 #set raw(lang: "typ")
 #set underline(stroke: .05em, offset: .25em)
-#show raw: set text(font: ("IBM Plex Mono", "Source Han Sans", "Noto Sans CJK SC"))
+#show raw: set text(font: ("IBM Plex Mono", "Cascadia Code", "Source Han Sans", "Noto Sans CJK SC"))
 #show raw.where(block: false): box.with(
   fill: luma(240),
   inset: (x: .3em, y: 0em),
@@ -260,7 +260,7 @@
 
 #slide[
   #set text(.5em)
-  #raw(read("examples/poster.typ").split("\n\n\n").at(1), lang: "typ", block: true)
+  #raw(read("examples/poster.typ").split("\n\n\n").at(1, default: ""), lang: "typ", block: true)
 ][
   #set align(center + horizon)
   #v(-1em)
@@ -392,7 +392,7 @@ Write inline equations like #mi("x") or #mi[y].
   #set text(.5em)
   #v(-1em)
   #show raw.where(block: true): set block(breakable: false)
-  #raw(read("examples/conference.typ").split("\n\n\n\n").at(1), block: true, lang: "typ")
+  #raw(read("examples/conference.typ").split("\n\n\n\n").at(1, default: ""), block: true, lang: "typ")
 ][
   #set align(right + horizon)
   #show: rect.with(stroke: .5pt)
@@ -435,7 +435,7 @@ Write inline equations like #mi("x") or #mi[y].
   #image("examples/chicv.svg")
 ]
 
-
+/**
 == 案例：南京大学学位论文
 
 #slide(composer: (1fr, auto))[
@@ -484,7 +484,7 @@ Write inline equations like #mi("x") or #mi[y].
   #show: rect.with(stroke: .5pt)
   #image("images/nju-thesis.png")
 ]
-
+**/
 
 = 制作Slides
 
@@ -621,7 +621,7 @@ Write inline equations like #mi("x") or #mi[y].
       table.hline(stroke: 2pt),
       [方案], [语法难度], [编译速度], [排版能力], [模板能力], [编程能力], [动画效果], [代码公式],
       table.hline(stroke: 1pt),
-      [PowerPoint], cell[#易][所见即所得], cell[#快][实时编辑], cell[#强][大公司开发\ 通用软件], cell[#强][模板数量最多\ 容易制作模板], cell[#弱][编程能力极弱\ 难以显示进度], cell[#强][动画效果多\ 但用起来复杂], cell[#难][难以插入代码和公式 #strike[贴图片]],
+      [PowerPoint], cell[#易][所见即所得], cell[#快][实时编辑], cell[#强][大公司开发\ 通用软件], cell[#强][模板数量最多\ 容易制作模板], cell[#弱][编程能力极弱\ 难以显示进度], cell[#强][动画效果多\ 但用起来复杂], cell[#难][难以保证代码和公式一致性],
       [Beamer], cell[#难][语法繁琐 + 嵌套多 + 难调试], cell[#慢][宏语言编译\ 速度极慢], cell[#弱][使用模板后\ 排版难以修改], cell[#中][拥有较多模板\ 开发模板较难], cell[#中][图灵完备\ 但只是宏语言], cell[#中][简单动画方便\ 无过渡动画], cell[#易][基本默认支持],
       [#Markdown], cell[#易][入门语法十分简单], cell[#快][语法简单\ 编译速度较快], cell[#弱][语法限制\ 排版能力弱], cell[#弱][难以制作模板\ 只有内置模板], cell[#弱][图灵不完备\ 需要外部脚本], cell[#中][动画效果全看提供了什么], cell[#易][基本默认支持],
       [#Touying], cell[#易][语法简单\ 使用方便], cell[#快][增量编译渲染\ 速度最快], cell[#中][满足日常学术\ Slides需求], cell[#强][制作和使用\ 模板都较简单], cell[#强][图灵完备\ 现代编程语言], cell[#中][简单动画方便\ 无过渡动画], cell[#易][默认支持\ MiTeX包],
@@ -634,7 +634,7 @@ Write inline equations like #mi("x") or #mi[y].
 == 一些常见的Slides问题
 
 - *能不能插入LaTeX公式？*
-  - 可以，只需要使用MiTeX包。#linkto("https://github.com/mitex-rs/mitex") #pause
+  - 可以，只需要使用#link("https://github.com/mitex-rs/mitex")[MiTeX包]。 #pause
 
 - *能不能加入GIF动图或者视频？*
   - GIF动图可以，但是要使用*Tinymist*插件的Slide模式。
@@ -650,17 +650,16 @@ Write inline equations like #mi("x") or #mi[y].
 
 == Typst包管理
 
-- Typst已经有了一个简单但强大的包管理方案。
-  - 包可以通过 `#import "@preview/pkg:1.0.0"` 的方式导入。
-    - *按需自动下载和自动导入第三方包。*
-      - 因此我们不需要像TexLive一样全量安装吃满硬盘。
-    - 使用 `@preview` 命名空间。
-    - 需要写上版本号，以保证文档源代码可复现性。
-  - 包目前存放于统一的#link("https://github.com/typst/packages")[GitHub Repo] 中。
-  - 包可以是*Package*和*Template*。
-  - 包也可以存放在本地，并且可以全局导入。
-
-- Typst有一个#link("https://typst.app/universe")[*Typst Universe*]，可以浏览已有包。
+Typst有一个简单但强大的包管理方案。
+- 包可以通过 `#import "@preview/pkg:1.0.0"` 的方式导入。
+  - *按需自动下载和自动导入第三方包。*
+    - 因此我们不需要像TeX Live一样全量安装吃满硬盘。
+  - #link("https://typst.app/universe")[*Typst Universe*]（官方仓库）中的包使用 `@preview` 命名空间。
+  - 需要写上版本号，以保证文档源代码可复现性。
+- 包目前存放于统一的#link("https://github.com/typst/packages")[GitHub Repo] 中。
+- 包可以是*Package*和*Template*。
+- 包也可以存放在本地（`@local`），并且可以全局导入。
+// - Typst有一个#link("https://typst.app/universe")[*Typst Universe*]，可以浏览已有包。
 
 
 == WASM插件
@@ -679,6 +678,7 @@ Write inline equations like #mi("x") or #mi[y].
 
 
 
+/**
 = Typst生态开发体验
 
 /**
@@ -709,6 +709,7 @@ Write inline equations like #mi("x") or #mi[y].
   - *Pandoc*支持和*Quarto*支持。
   - 在网页上运行 #Typst：#link("https://myriad-dreamin.github.io/typst.ts/")[typst.ts] 和#link("https://myriad-dreamin.github.io/shiroa/")[shiroa]。
   - 在*VS Code*的编辑器里显示数学符号的*Typst Math*插件。
+**/
 
 
 = 最后
