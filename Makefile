@@ -12,8 +12,8 @@ examples/%.svg: examples/%.typ
 
 SVG_FILES := $(patsubst examples/%.typ,examples/%.svg,$(wildcard examples/*.typ))
 
-presentation.pdf: main.typ $(SVG_FILES)
+presentation.pdf: main.typ utils.typ images/* $(SVG_FILES)
 	typst compile main.typ $@
 
-handout.pdf: main.typ $(SVG_FILES)
+handout.pdf: main.typ utils.typ images/* $(SVG_FILES)
 	typst compile main.typ $@ --input handout=true

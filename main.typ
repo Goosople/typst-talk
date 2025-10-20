@@ -7,7 +7,7 @@
 
 // global styles
 #set text(font: ("IBM Plex Serif", "Source Han Serif", "Noto Serif CJK SC"), lang: "zh", region: "cn")
-#show heading.where(level: 1): set heading(numbering: "1.")
+// #show heading.where(level: 1): set heading(numbering: "1.")
 #set text(weight: "medium")
 #set par(justify: true)
 #set raw(lang: "typ")
@@ -50,7 +50,7 @@
 
 == 目录 <touying:hidden>
 
-#align(horizon, components.adaptive-columns(outline(title: none, indent: 1em, depth: 1)))
+#if is-handout { align(horizon, components.adaptive-columns(outline(title: none, indent: 1em, depth: 1))) }
 
 #if not is-handout { chapter-slide[What is Typst] }
 
