@@ -46,6 +46,8 @@
   config-page(margin: (top: 2.4em))
 )
 
+#set document(description: [本场分享将带你快速了解现代排版系统 Typst 的特性与使用方法。Typst 融合了 LaTeX 强大的排版能力与 Markdown 的简洁语法，还内置了现代化的脚本语言，支持变量、函数、内容块嵌套等丰富功能。讲座将介绍 Typst 的基本语法、样式设置、实际应用、包管理等内容，并通过丰富案例和对比，展示 Typst 在语法简洁性、编译速度、易用性和可编程性方面的显著优势。无论是编写论文、简历、幻灯片，还是日常笔记或作业，Typst 都能为你带来更流畅、愉悦的编写体验。希望本场分享能帮你快速上手这一轻量又强大的现代排版工具，让文档写作变得既高效又有趣！])
+
 #title-slide()
 
 == 目录 <touying:hidden>
@@ -108,6 +110,18 @@
   - 可嵌套的 `[标记模式]`、`#{脚本模式}` 与 `$数学模式$` //#strike[不就是JSX嘛]
   - 统一的包管理，支持导入WASM插件和按需自动安装第三方包
 
+== Typst当前局限
+Typst还是一个#link("https://typst.app/about/#new-foundation")[很年轻的项目]，因此相比于 #LaTeX 还有一些不足：
+
+- *API尚未完全稳定*
+  - 当前版本号为#sys.version，语法和函数在后续版本中可能发生变动。
+
+- *排版细节仍在打磨*
+  - Justify（「两端对齐」）、数学公式等部分排版细节尚不如 #LaTeX。
+
+- *生态系统处于早期*
+  - 虽然社区非常活跃，但可用包和模板的数量与CTAN的宏包海洋相比还有明显差距。
+  - 此外，许多专业场景要求使用 #LaTeX，Typst在这些领域的接受度仍有待提高。
 
 == Typst对比其他排版系统
 
@@ -144,6 +158,7 @@
   )
 ]
 
+/**
 #slide[
   #set align(center + horizon)
   #v(-1.5em)
@@ -151,6 +166,7 @@
   #v(-1.5em)
   From Reddit #link("https://www.reddit.com/r/LaTeX/comments/z2ifki/latex_vs_word_vs_pandoc_markdown/")[r/LaTeX] and modified by OrangeX4
 ]
+**/
 
 == Typst vs #LaTeX
 #[
@@ -224,6 +240,7 @@
     )
   )
 ]
+
 #if not is-handout { chapter-slide[How to use Typst] }
 
 = 安装
