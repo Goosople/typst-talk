@@ -1,6 +1,7 @@
 #import "@preview/octique:0.1.1": *
 #import "@preview/metalogo:1.2.0"
 #import "@preview/touying:0.6.1": *
+#import "@preview/tiaoma:0.3.0"
 #import themes.university: *
 
 // Logos
@@ -80,4 +81,68 @@
     body
   }
   touying-slide(self: self, config: config, slide-body)
+})
+
+#let title-slide(
+  config: (:),
+  extra: none,
+  ..args,
+) = touying-slide-wrapper(self => {
+  self = utils.merge-dicts(
+    self,
+    config,
+    config-common(freeze-slide-counter: true),
+  )
+  let info = self.info + args.named()
+  info.authors = {
+    let authors = if "authors" in info {
+      info.authors
+    } else {
+      info.author
+    }
+    if type(authors) == array {
+      authors
+    } else {
+      (authors,)
+    }
+  }
+  let body = {
+    if info.logo != none {
+      place(right, text(fill: self.colors.primary, info.logo))
+    }
+    std.align(
+      center + horizon,
+      {
+        block(
+          inset: 0em,
+          breakable: false,
+          {
+            text(size: 2em, fill: self.colors.primary, strong(info.title))
+            if info.subtitle != none {
+              parbreak()
+              text(size: 1.2em, fill: self.colors.primary, info.subtitle)
+            }
+          },
+        )
+        set text(size: .8em)
+        grid(
+          columns: (1fr,) * calc.min(info.authors.len(), 3),
+          column-gutter: 1em,
+          row-gutter: 1em,
+          ..info.authors.map(author => text(fill: self.colors.neutral-darkest, author))
+        )
+        v(1em)
+        if info.institution != none {
+          parbreak()
+          text(size: .9em, info.institution)
+        }
+        if info.date != none {
+          parbreak()
+          text(size: .8em, utils.display-info-date(self))
+        }
+      },
+    )
+    extra
+  }
+  touying-slide(self: self, body)
 })
