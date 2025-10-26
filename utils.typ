@@ -2,6 +2,7 @@
 #import "@preview/metalogo:1.2.0"
 #import "@preview/touying:0.6.1": *
 #import "@preview/tiaoma:0.3.0"
+#import "@preview/pinit:0.2.2"
 #import themes.university: *
 
 // Logos
@@ -43,11 +44,35 @@
   else { link }
 }
 
+/** buggy as for now
+#let link-with-qrcode(link) = context {
+  if type(link.dest) == location { return link }
+  let x = here().position().x
+  let y = here().position().y
+  let p = here().page()
+  let starting-pin = link.dest + repr((p, x, y))
+  let ending-pin = link.dest + repr((x, y, p))
+  if link.body not in (
+    box(baseline: 30%, move(dy: -.15em, octique-inline("link"))),
+    box(baseline: 30%, move(dy: -.15em, octique-inline("mark-github"))),
+  ) [
+    #pinit.pin(starting-pin)
+    #link
+    #pinit.pin(ending-pin)
+    #pinit.pinit-point-from((starting-pin, ending-pin))[#tiaoma.qrcode(link.dest, width: 4em)]
+  ]
+  else { link }
+}
+**/
+
 #let github-repo(repo) = link("https://github.com/" + repo, repo)
 
+/*
 #let chapter-slide(body) = focus-slide[
   #align(center + horizon, body)
 ]
+*/
+#let chapter-slide = _ => none
 
 #let new-section-slide(config: (:), level: 1, numbered: true, body) = touying-slide-wrapper(self => {
   let slide-body = context {
