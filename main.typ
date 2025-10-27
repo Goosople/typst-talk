@@ -55,14 +55,18 @@
 
 == 目录 <touying:hidden>
 
-#slide(self => [
+#slide(self => context [
   #set text(fill: self.colors.primary, weight: "regular")
-  #set outline.entry(fill: repeat("·"))
-  #show outline.entry: it => link(
-    it.element.location(),
-    it.indented(it.prefix(), it.inner()),
+  #let entries = query(heading).filter(h => h.level == 1).map(
+    h => link(h.location(), stack(
+      dir: ltr,
+      spacing: .1em,
+      text(h.body, weight: "bold"),
+      std.h(1fr),
+      str(utils.slide-counter.at(h.location()).at(0))
+    ))
   )
-  #align(horizon, pad(outline(title: none, depth: 1), x: 20%))
+  #align(horizon, pad(stack(..entries, spacing: .75em), x: 20%))
 ])
 
 #if not is-handout { chapter-slide[What is Typst] }
