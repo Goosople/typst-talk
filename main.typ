@@ -55,7 +55,15 @@
 
 == 目录 <touying:hidden>
 
-#if is-handout { align(horizon, components.adaptive-columns(outline(title: none, indent: 1em, depth: 1))) }
+#slide(self => [
+  #set text(fill: self.colors.primary, weight: "regular")
+  #set outline.entry(fill: repeat("·"))
+  #show outline.entry: it => link(
+    it.element.location(),
+    it.indented(it.prefix(), it.inner()),
+  )
+  #align(horizon, pad(outline(title: none, depth: 1), x: 20%))
+])
 
 #if not is-handout { chapter-slide[What is Typst] }
 
@@ -63,7 +71,7 @@
 
 == 什么是Typst？
 
-- #Typst 是一个#pause;语法简洁、效果优异、功能强大的#meanwhile;排版工具。#pause#pause
+- #Typst 是一个#pause;使用简单、效果优异、功能强大的#meanwhile;排版工具。#pause#pause
 
 /*
 - *简单来说：*
