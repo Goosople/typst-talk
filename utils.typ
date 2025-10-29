@@ -35,6 +35,8 @@
 
 #let keydown(key) = box(stroke: 2pt, inset: .2em, radius: .2em, baseline: .2em, key)
 
+#let small = text.with(size: .75em)
+
 #let link-with-icon(link) = {
   if type(link.dest) == location { return link }
   if link.body not in (
