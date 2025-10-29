@@ -4,6 +4,9 @@
 #import "utils.typ": *
 
 #let is-handout = sys.inputs.at("handout", default: "false") == "true" // it's risky to use eval
+#let show-notes = sys.inputs.at("show-notes", default: "false") == "true" // it's risky to use eval
+
+#let alternative-note = if is-handout { it => it } else { speaker-note }
 
 // global styles
 #set text(font: ("IBM Plex Serif", "Source Han Serif", "Noto Serif CJK SC"), lang: "zh", region: "cn")
@@ -31,7 +34,9 @@
   config-common(
     handout: is-handout,
     datetime-format: "[year]年[month]月[day]日",
-    new-section-slide-fn: new-section-slide
+    new-section-slide-fn: new-section-slide,
+    enable-pdfpc: true,
+    show-notes-on-second-screen: if show-notes { right },
   ),
   config-info(
     title: [并不复杂的Typst讲座],
