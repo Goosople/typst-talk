@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Release tag (e.g. v1.0.0)。若为空且由手动触发，则使用 manual-<run-id>'
+        description: 'Release tag (e.g. v1.0.0)'
         required: false
   push:
     tags:
@@ -23,6 +23,8 @@ jobs:
         run: |
           curl -L $(curl -sL https://api.github.com/repos/typst/typst/releases/latest | grep -o "http.*x86_64.*linux.*\.tar\.xz") | tar xJ --strip-components=1
           sudo install typst /usr/local/bin/
+          sudo apt update
+          sudo apt install -y --install-suggests fonts-linuxlibertine fonts-noto fonts-ibm-plex fonts-cascadia-code
 
       - name: Build docs with make
         run: make
